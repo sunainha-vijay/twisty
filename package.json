@@ -1,7 +1,7 @@
 {
-  "name": "supaflare-monorepo",
+  "name": "twisturl-monorepo",
   "private": true,
-  "author": "ian <licitdev@gmail.com>",
+  "author": "sv <sunainhavijay@gmail.com>",
   "license": "MIT",
   "workspaces": [
     "./app",
