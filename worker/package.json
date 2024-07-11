@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@supaflare/worker",
+  "name": "@twisturl/worker",
   "version": "0.0.0",
   "description": "",
   "main": "index.js",
