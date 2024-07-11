@@ -1,4 +1,4 @@
-name = "supaflare-worker"
+name = "twisturl-worker"
 main = 'index.js'
 usage_model = 'bundled'
 compatibility_flags = []
