@@ -7,9 +7,9 @@ addEventListener('fetch', async (event) => {
 
 	if (request.method === 'OPTIONS') {
 		return event.respondWith(handleOptions(request));
-	} else if (request.method === 'POST' && url.includes('/supaflare_cfw_admin_update')) {
+	} else if (request.method === 'POST' && url.includes('/twisturl_cfw_admin_update')) {
 		return event.respondWith(processUpdateAdmin(request));
-	} else if (request.method === 'POST' && url.includes('/supaflare_cfw_update')) {
+	} else if (request.method === 'POST' && url.includes('/twisturl_cfw_update')) {
 		return event.respondWith(processUpdate(request));
 	} else {
 		return event.respondWith(processRedirect(request));
@@ -58,7 +58,7 @@ async function processUpdateAdmin(request) {
 			const requestData = await request.json();
 			if (
 				!requestData.admin_key ||
-				requestData.admin_key !== SUPAFLARE_ADMIN_KEY ||
+				requestData.admin_key !== TWISTURL_ADMIN_KEY ||
 				!requestData.token ||
 				!requestData.link_id ||
 				!/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(requestData.link_id)
@@ -92,25 +92,25 @@ async function processUpdateAdmin(request) {
 
 async function updateKV(requestData, data) {
 	if (data.length === 0) {
-		const currentSlug = await SUPAFLARE.get('links:id/' + requestData.link_id, { type: 'text' });
-		const linkData = await SUPAFLARE.get('links:slug/' + currentSlug, { type: 'json' });
+		const currentSlug = await TWISTURL.get('links:id/' + requestData.link_id, { type: 'text' });
+		const linkData = await TWISTURL.get('links:slug/' + currentSlug, { type: 'json' });
 		if (linkData && linkData.id === requestData.link_id) {
-			await SUPAFLARE.delete('links:slug/' + linkData.slug);
-			await SUPAFLARE.delete('links:id/' + linkData.id);
+			await TWISTURL.delete('links:slug/' + linkData.slug);
+			await TWISTURL.delete('links:id/' + linkData.id);
 		}
 	} else {
-		const currentSlug = await SUPAFLARE.get('links:id/' + requestData.link_id, { type: 'text' });
-		await SUPAFLARE.put('links:slug/' + data[0].slug, JSON.stringify(data[0]));
+		const currentSlug = await TWISTURL.get('links:id/' + requestData.link_id, { type: 'text' });
+		await TWISTURL.put('links:slug/' + data[0].slug, JSON.stringify(data[0]));
 		if (data[0].slug !== currentSlug) {
-			await SUPAFLARE.put('links:id/' + requestData.link_id, data[0].slug);
-			await SUPAFLARE.delete('links:slug/' + currentSlug);
+			await TWISTURL.put('links:id/' + requestData.link_id, data[0].slug);
+			await TWISTURL.delete('links:slug/' + currentSlug);
 		}
 	}
 }
 
 async function processRedirect(request) {
     const url = new URL(request.url);
-    let linkData = await SUPAFLARE.get('links:slug' + url.pathname, { type: 'json' });
+    let linkData = await TWISTURL.get('links:slug' + url.pathname, { type: 'json' });
     if (!linkData) {
         return new Response('Not Found.', {
             status: 404,
