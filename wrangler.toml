@@ -1,5 +1,5 @@
 
-name = "supaflare-worker"
+name = "twisturl-worker"
 main = 'index.js'
 compatibility_flags = []
 workers_dev = true
